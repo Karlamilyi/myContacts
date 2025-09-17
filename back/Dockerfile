@@ -1,14 +1,12 @@
 FROM node:22-alpine
 
+WORKDIR /back
+
 COPY package.json .
 
-RUN npm install --production
+RUN npm install
 
 COPY . .
-
-COPY .env /src/.env
-
-WORKDIR /src
 
 EXPOSE 3000
 

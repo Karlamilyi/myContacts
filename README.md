@@ -28,6 +28,10 @@ A modern contact management application built with a React frontend and Node.js 
       - [With Docker](#with-docker)
       - [Local Build](#local-build)
     - [Development with Docker](#development-with-docker)
+  - [🤝 Contributing](#-contributing)
+  - [📝 License](#-license)
+  - [📞 Support](#-support)
+  - [🔄 Version History](#-version-history)
 
 // ...existing code...
 
@@ -224,4 +228,29 @@ docker-compose -f docker-compose.dev.yml up
 docker-compose up
 ```
 
-// ...existing code...
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Support
+
+If you have any questions or run into issues, please:
+- Check the documentation
+- Open an issue on GitHub
+- Contact the development team
+
+## 🔄 Version History
+
+- **v1.0.0** - Initial release with basic contact management features
+
+---
+
+**Happy coding! 🎉**

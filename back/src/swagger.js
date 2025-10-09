@@ -79,6 +79,27 @@ const swaggerDefinition = {
           },
         },
       },
+      Contact: {
+        type: 'object',
+        properties: {
+          _id: { type: 'string' },
+          user: { type: 'string' },
+          firstName: { type: 'string' },
+          lastName: { type: 'string' },
+          phone: { type: 'string' },
+          createdAt: { type: 'string', format: 'date-time' },
+          updatedAt: { type: 'string', format: 'date-time' }
+        }
+      },
+      ContactRequest: {
+        type: 'object',
+        required: ['firstName', 'lastName', 'phone'],
+        properties: {
+          firstName: { type: 'string' },
+          lastName: { type: 'string' },
+          phone: { type: 'string' }
+        }
+      },
       AuthResponse: {
         type: 'object',
         properties: {

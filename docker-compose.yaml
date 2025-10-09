@@ -10,7 +10,16 @@ services:
       - MONGO_URL=${MONGO_URL}
     depends_on:
       - mongo
-
+  frontend:
+    build: ./front
+    container_name: myContacts-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./front:/front
+      - /front/node_modules
+    depends_on:
+      - backend
   mongo:
     container_name: myContacts-db
     image: mongo:latest

@@ -23,7 +23,7 @@ pipeline {
 
         stage('Push Images') {
             steps {
-                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 sh "docker push ${BACK_IMAGE}:latest"
                 sh "docker push ${BACK_IMAGE}:${BUILD_NUMBER}"
                 sh "docker push ${FRONT_IMAGE}:latest"

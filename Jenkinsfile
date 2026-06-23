@@ -33,8 +33,35 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh "docker compose -f ~/repos/myContacts/docker-compose.yaml --env-file ~/repos/myContacts/.env down"
-                sh "docker compose -f ~/repos/myContacts/docker-compose.yaml --env-file ~/repos/myContacts/.env up -d"
+                sh '''
+                    docker stop myContacts-backend myContacts-frontend myContacts-db || true
+                    docker rm myContacts-backend myContacts-frontend myContacts-db || true
+                '''
+                sh "docker network create mycontacts-net || true"
+                sh """
+                    docker run -d \
+                      --name myContacts-db \
+                      --network mycontacts-net \
+                      -e MONGO_INITDB_ROOT_USERNAME=admin \
+                      -e MONGO_INITDB_ROOT_PASSWORD=password \
+                      -v mongo-data:/data/db \
+                      mongo:latest
+                """
+                sh """
+                    docker run -d \
+                      --name myContacts-backend \
+                      --network mycontacts-net \
+                      -p 3000:3000 \
+                      -e MONGO_URL=mongodb://admin:password@myContacts-db:27017/mycontacts?authSource=admin \
+                      mouuuuuu/mycontacts-back:latest
+                """
+                sh """
+                    docker run -d \
+                      --name myContacts-frontend \
+                      --network mycontacts-net \
+                      -p 5173:5173 \
+                      mouuuuuu/mycontacts-front:latest
+                """
             }
         }
     }

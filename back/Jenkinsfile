@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+        IMAGE = "mouuuuuu/mycontacts-back"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Karlamilyi/myContacts'
+            }
+        }
+
+        stage('Build Image') {
+            steps {
+                sh "docker build -t ${IMAGE}:${BUILD_NUMBER} -t ${IMAGE}:latest ./back"
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh "docker push ${IMAGE}:latest"
+                sh "docker push ${IMAGE}:${BUILD_NUMBER}"
+            }
+        }
+
+        stage('Deploy API') {
+            steps {
+                sh 'docker stop myContacts-backend || true'
+                sh 'docker rm myContacts-backend || true'
+                sh """
+                    docker run -d \
+                      --name myContacts-backend \
+                      --network mycontacts-net \
+                      -p 3000:3000 \
+                      -e MONGO_URL=mongodb://admin:password@myContacts-db:27017/mycontacts?authSource=admin \
+                      ${IMAGE}:latest
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "API déployée — ${IMAGE}:${BUILD_NUMBER}"
+        }
+        failure {
+            echo 'Pipeline API échoué.'
+        }
+    }
+}
